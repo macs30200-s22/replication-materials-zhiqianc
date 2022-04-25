@@ -1,5 +1,7 @@
 # Supplemental Code
 
+[![DOI](https://zenodo.org/badge/483473735.svg)](https://zenodo.org/badge/latestdoi/483473735)
+
 The code is written in Python.</p>
 All of its dependencies can be installed by running the following in the terminal (with the `requirement.txt` file included in this repository):
 ```python
