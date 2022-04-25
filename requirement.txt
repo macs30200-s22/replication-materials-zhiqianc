@@ -1,0 +1,7 @@
+pandas==1.2.4
+matplotlib==3.3.4
+numpy==1.20.1
+lyricsgenius==3.0.1
+nltk==3.6.1
+statsmodel==0.12.2
+gensim==3.8.3
