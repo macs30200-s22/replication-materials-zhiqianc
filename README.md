@@ -92,4 +92,6 @@ At the significance level of 10%, the test fails to reject the null hypothesis t
 
 The results show after first order differencing, these two time series are stationary. Thus we will use the first order difference of these two series as the two variables of the regression model.</p>
 
-These initial findings are important. When building models on time series data, we need to make sure these time series are stationary (no unit root exists). If the unit root exists, the relationship between the independent and dependent variables is deceptive because any error in the residual sequence does not decay as the sample size (the number of periods) increases, meaning that the effect of the residual in the model is permanent. This regression is also called pseudo-regression. If the unit root exists, the process is a random walk.
+These initial findings are important. When building models on time series data, we need to make sure these time series are stationary (no unit root exists). If the unit root exists, the relationship between the independent and dependent variables is deceptive because any error in the residual sequence does not decay as the sample size (the number of periods) increases, meaning that the effect of the residual in the model is permanent. This regression is also called pseudo-regression. If the unit root exists, the process is a random walk.</p>
+
+To use this repository for a scientific publication, you can cite the Zenodo DOI.
