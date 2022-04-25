@@ -7,128 +7,15 @@ import collections
 import re
 
 # Some Functions from Last Time to get us started:
-def get_wordnet_pos(word):
-    '''
-    Tags each word with its Part-of-speech indicator -- specifically used for lemmatization in the get_lemmas function
-    '''
-    tag = nltk.pos_tag([word])[0][1][0].upper()
-    tag_dict = {'J': nltk.corpus.wordnet.ADJ,
-                'N': nltk.corpus.wordnet.NOUN,
-                'V': nltk.corpus.wordnet.VERB,
-                'R': nltk.corpus.wordnet.ADV}
 
-    return tag_dict.get(tag, nltk.corpus.wordnet.NOUN)
-
-def get_lemmas(text):
+def negemo_perc(text, liwc_dict):
     '''
-    Gets lemmas for a string input, excluding stop words, punctuation
-    '''
-    # Define stop words
-    stop = nltk.corpus.stopwords.words('english') + list(string.punctuation)
-    
-    # Combine list elements together into a single string to use NLTK's tokenizer
-    text = ' '.join(text)
-    
-    # tokenize + lemmatize words in text
-    tokens = [i for i in nltk.word_tokenize(text.lower()) if i not in stop]
-    lemmas = [nltk.stem.WordNetLemmatizer().lemmatize(t, get_wordnet_pos(t)) for t in tokens]
-    return lemmas
-
-def get_tokens(text):
-    '''
-    Gets all tokens (including stop words), excluding punctuation
-    '''
-    # drop punctuation, but keep stopwords for initial word counting
-    text = text.translate(str.maketrans('', '', string.punctuation))
-
-    # tokenize remaining words and make a list of them for input `text`
-    tokens = [i for i in nltk.word_tokenize(text.lower())]
-    return tokens
-
-def social_connection(text, liwc_dict):
-    '''
-    Compute rel. percentage of LIWC 2007 'social' category:
-    words like "mate," "talk," "child"
-    '''
-    
-    liwc_counts = wordCount(text, liwc_dict)
-    
-    return liwc_counts[0]['social'] / liwc_counts[2]
-
-def antisocial_perc(text, liwc_dict):
-    '''
-    Compute rel. percentage of LIWC 2007 'anger' and 'swear' categories:
-    words like "kill," "hate," "annoyed," "damn," "fuck"
+    Compute rel. percentage of LIWC 2007 'negemo','death' categories:
+    words like "suicide," "desperate," "depress," "cry," 
     '''
     liwc_counts = wordCount(text, liwc_dict)
     
-    return (liwc_counts[0]['anger'] + liwc_counts[0]['swear']) / liwc_counts[2]
-
-def positive_perc(text, liwc_dict):
-    '''
-    Compute rel. percentage of LIWC 2007 'posemo' categories:
-    words like "love," "nice," "sweet"
-    '''
-    liwc_counts = wordCount(text, liwc_dict)
-    
-    return liwc_counts[0]['posemo'] / liwc_counts[2]
-
-def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=2):
-    '''
-    Computes Coherence values for LDA models with differing numbers of topics.
-    
-    Returns list of models along with their respective coherence values (pick
-    models with the highest coherence)
-    '''
-    coherence_values = []
-    model_list = []
-    for num_topics in range(start, limit, step):
-        model = models.ldamulticore.LdaMulticore(corpus=corpus,
-                                                 id2word=dictionary,
-                                                 num_topics=num_topics,
-                                                 workers=effective_n_jobs(-1))
-        model_list.append(model)
-        coherence_model = models.coherencemodel.CoherenceModel(model=model, 
-                                                               corpus=corpus,
-                                                               dictionary=dictionary,
-                                                               coherence='u_mass')
-        coherence_values.append(coherence_model.get_coherence())
-
-    return model_list, coherence_values
-
-def fill_topic_weights(df_row, bow_corpus, ldamodel):
-    '''
-    Fill DataFrame rows with topic weights for topics in songs.
-    
-    Modifies DataFrame rows *in place*.
-    '''
-    try:
-        for i in ldamodel[bow_corpus[df_row.name]]:
-            df_row[str(i[0])] = i[1]
-    except:
-        return df_row
-    return df_row
-
-def top_songs_by_topic(music_df, ldamodel, corpus, ntop=1):
-    '''
-    Finds the top "n" songs by topic, which we can use for
-    understanding the types of songs included in a topic.
-    '''
-    topn_songs_by_topic = {}
-    for i in range(len(ldamodel.print_topics())):
-        # For each topic, collect the most representative song(s)
-        # (i.e. highest probability containing words belonging to topic):
-        top = sorted(zip(range(len(corpus)), ldamodel[corpus]), 
-                     reverse=True, 
-                     key=lambda x: abs(dict(x[1]).get(i, 0.0)))
-        topn_songs_by_topic[i] = [j[0] for j in top[:ntop]]
-        
-        # Print out the topn songs for each topic and return their indices as a dictionary for further analysis:
-        print("Topic " + str(i))
-        print(music_df[['title','year','artist']].loc[topn_songs_by_topic[i]])
-        print("*******************************")
-    
-    return topn_songs_by_topic
+    return (liwc_counts[0]['negemo'] + liwc_counts[0]['death']) / liwc_counts[2]
 
 '''
 The following code is adapted from psyLex.
