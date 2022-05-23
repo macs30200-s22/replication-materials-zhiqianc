@@ -1,6 +1,13 @@
 # Supplemental Code
 
+[![DOI](https://zenodo.org/badge/483473735.svg)](https://zenodo.org/badge/latestdoi/483473735)
+
 The code is written in Python.</p>
+All of its dependencies can be installed by running the following in the terminal (with the `requirement.txt` file included in this repository):
+```python
+pip install -r requirement.txt
+```
+
 Introduction of the files:</p>
 `Data`: This folder includes all the data downloaded online including top rap songs, suicide rates, GNP per capita and growth, divorce rates and unemployment rates.</p>
 `analysis.py`: the module includes several Python functions that can help reproducing the analysis.</p>
