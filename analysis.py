@@ -1,4 +1,4 @@
-from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.stattools import kpss
 import pandas as pd
 import matplotlib as plt
 
@@ -19,30 +19,18 @@ def plot_by_column(file_path):
         plt.show();
     
     
-    
-def adf_test(series):
-    series.dropna(inplace=True)
-    test_res = adfuller(series)
-    t_statistic = test_res[0]
-    p_value = test_res[1]
-    critical_val_dict = test_res[4]
-    
-    print(f'ADF Statistic: {t_statistic}')
+def kpss_test(series, **kw):    
+    statistic, p_value, n_lags, critical_values = kpss(series, **kw)
+    # Format Output
+    print(f'KPSS Statistic: {statistic}')
     print(f'p-value: {p_value}')
-    for key, value in critical_val_dict.items():
-        print('Critial Values:')
-        print(f'   {key}, {value}')
-        
-    print('Test conclusion:')
-    if t_statistic < critical_val_dict['1%']:
-        print('At the significance level of 1%, the test fails to reject the null hypothesis that there is no unit root. The series is stationary.')
-    elif t_statistic < critical_val_dict['5%']:
-        print('At the significance level of 5%, the test fails to reject the null hypothesis that there is no unit root. The series is stationary.')
-    elif t_statistic < critical_val_dict['10%']:
-        print('At the significance level of 10%, the test fails to reject the null hypothesis that there is no unit root. The series is stationary.')
-    else:
-        print('the test rejects the null hypothesis. The series is non-stationary.')
+    print(f'num lags: {n_lags}')
+    print('Critial Values:')
+    for key, value in critical_values.items():
+        print(f'   {key} : {value}')
+    print(f'Result: The series is {"not " if p_value < 0.01 else ""}stationary')
 
+    
 def differencing(series,order):
     while order != 0:
         series = series.diff()
