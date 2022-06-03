@@ -10,11 +10,16 @@ pip install -r requirement.txt
 
 Introduction of the files:</p>
 `Data`: This folder includes all the data downloaded online including top rap songs, suicide rates, GNP per capita and growth, divorce rates and unemployment rates.</p>
+
+`Code`: This folder includes two python notebook files.
+<ul>
+   <li><code>data_crawler.ipynb</code>: codes that show how I utilize **Genius api** to scrape the lyrics texts, process the texts by using music module, and combine all the time series data into one dataframe.</li>
+   <li><code>Project code.ipynb</code>: codes and results that show how I conduct <strong>KPSS test</strong> , <strong>correlation analysis</strong>, <strong>model construction</strong>, and <strong>cross correlation analysis</strong></li>
+</ul>
+
 `analysis.py`: the module includes several Python functions that can help reproducing the analysis.</p>
 `music.py`: the module includes several Python functions that can help processing the lyrical texts.</p>
 `LIWC2007_English100131.dic`: the dictionary that assigns English words into different categories. It is used to help counting the percentage of words related to some topics.</p>
-`data_crawler.ipynb`: codes that show how I utilize **Genius api** to scrape the lyrics texts, process the texts by using music module, and combine all the time series data into one dataframe.</p>
-`Project code.ipynb`: codes and results that show how I conduct **KPSS test** , **correlation analysis**, **model construction**, and **cross correlation analysis**</p>
 
 To reproduce the code, you should first import the `analysis` module in this repository. </p>
 ```python
@@ -25,8 +30,8 @@ Then use the `plot_by_column` function to plot every column of the data (each co
 analysis.plot_by_column('data/data.csv')
 ```
 Here are the plots of relevant lyrical mentions and suicide rates across the years: </p>
-![lyrical mentions related to death, negative emotions](https://github.com/macs30200-s22/replication-materials-zhiqianc/blob/main/README_files/lyrical%20mentions%20percentage_by_year.png)
-![suicide rates](https://github.com/macs30200-s22/replication-materials-zhiqianc/blob/main/README_files/Suicide%20rate_by_year.png)
+![lyrical mentions related to death, negative emotions](https://github.com/macs30200-s22/replication-materials-zhiqianc/blob/main/visualization/lyrical%20mentions%20percentage_by_year.png)
+![suicide rates](https://github.com/macs30200-s22/replication-materials-zhiqianc/blob/main/visualization/Suicide%20rate_by_year.png)
 
 This two series need to stationary before being fed into the models. Let's use the `kpss_test` function in the `analysis` module to test. 
 ```python
